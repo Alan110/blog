@@ -17,6 +17,14 @@ tags:
 
 http://theme-next.iissnan.com/getting-started.html#menu-settings
 
+### 首页显示文章列表
+
+```
+      {% set display_toc = `is_post and` theme.toc.enable %}
+      {% set display_toc = theme.toc.enable %}
+```
+
+
 ### 如何设置页面文章的篇数？
 
 > hexo可以设置首页,归档,tag的文章篇数,不过需要安装hexo的插件
@@ -150,6 +158,24 @@ next与页面动画相关的代码是在/source/js/src/motion.js文件里. 乍�
 这便是一个简单的队列function依次执行的实现,估计作者是想自己练练手实现一个动画队列吧....
 
 好了,一切都真相大白,拨开云雾见明月.要实现咱们的需求也很简单了. 把作者的动画队列代码删掉就行. 各个部分就能并行执行.
+
+
+## next主题自定义样式
+
+next的css样式放在了source/css/ 下面，使用了stylus预处理.
+
+```
+    source/css
+        ├── _common         // 各组件部分
+        ├── _custom
+        ├── _mixins         
+        ├── _schemes        // 3套自带样式
+        ├── _variables      // 变量
+        └── main.style      // css入口文件
+```
+
+_schemes里面的css会覆盖原本的css，优先级高。
+
 
 ## 技巧分享
 
