@@ -63,5 +63,46 @@ fis.media('dev').match("/src/(*).js",{
 
 ```
 
+### 自定义配置
+
+可以使用media来设置不同的发布配置，
+使用环境变量来做同media下的细分配置
+```
+var process = require('process');
+if(process.env.fisv == 'xx'){
+    fis.media('dev').match('*.js',{
+        1...
+    });
+}else{
+    fis.media('dev').match('*.js',{
+        2...
+    });
+}
+
+
+调用
+
+fisv=xx fis3 relase dev
+
+fisv=xxx 只会在当次命令下生效
+
+```
+
+注意，process.env.fisv 只能在外层fis语法里面拿到，在内层函数里面是拿不到的。比如在:
+```
+fis.match('*.js',{
+    preprocessor:function(){
+       process.env.fisv  // 拿不到 
+    }
+})
+```
+
+fis默认对文件有编译换成，如果文件没有改变，下一次编译会直接走缓存，使用环境变量的方式，可能不同次编译走的fis配置语句不同，所以要去掉文件的缓存
+```
+fis.match('*.js',{
+    useCatche : false
+})
+```
+
 
 ## 构件流程

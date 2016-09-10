@@ -1,0 +1,4 @@
+--ignore-dir=.deploy_git/
+--ignore-dir=public/
+
+
