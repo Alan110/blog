@@ -1,6 +1,8 @@
 ---
 title: fis3 入门解析
 date: 2016-08-18 23:28:55
+type: "categories"
+categories: "构建工具"
 tags:
 ---
 

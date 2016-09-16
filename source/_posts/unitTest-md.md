@@ -1,6 +1,8 @@
 ---
 title: unitTest.md
 date: 2016-08-25 20:49:05
+type: "categories"
+categories: "前端自动化测试"
 tags:
 ---
 

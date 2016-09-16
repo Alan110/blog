@@ -2,7 +2,7 @@
 title: 极致编程，我最爱的vim
 date: 2016-08-16 14:44:50
 type: "categories"
-categories: "工具"
+categories: "vim"
 tags:
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: 美化你的vim
 date: 2016-09-11 01:03:12
+type: "categories"
+categories: "vim"
 tags:
 ---
 

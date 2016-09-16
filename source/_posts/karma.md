@@ -1,6 +1,8 @@
 ---
 title: 使用karma管理测试框架
 date: 2016-08-30 21:19:44
+type: "categories"
+categories: "前端自动化测试"
 tags:
 ---
 

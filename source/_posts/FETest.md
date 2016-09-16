@@ -1,6 +1,8 @@
 ---
 title: 前端自动化测试
 date: 2016-08-25 20:53:15
+type: "categories"
+categories: "前端自动化测试"
 tags:
 ---
 

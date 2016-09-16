@@ -1,6 +1,8 @@
 ---
 title: neovim
 date: 2016-09-07 16:54:48
+type: "categories"
+categories: "vim"
 tags:
 ---
 

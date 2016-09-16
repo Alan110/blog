@@ -1,6 +1,8 @@
 ---
 title: gulp搭建构建系统
 date: 2016-08-21 16:26:19
+type: "categories"
+categories: "构建工具"
 tags:
 ---
 
