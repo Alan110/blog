@@ -159,19 +159,40 @@ eslint的配置主要有3个概念 -- env , rules , globals
 
 ## 文件/代码查找
 fzf + ag
+> [fzf](https://github.com/junegunn/fzf)
 
-> fzf
 fzf是一个用go语言写的命令行模糊查询工具。可以与vim结合使用。它的速度很快。
 fzf是一个通用筛选工具，你可以自己指定它的数据源，然后用fzf来筛选。
 
-安装
+##### 安装
 `sudo brew install fzf`
 直接在命令行下执行 `fzf`就会查询当前目录下的所有文件。但是当你选择一个文件按下回车时，没有任何动作，只是简单的输出文件路径。
 fzf默认是find命令来查找文件，你可以换成别的命令，或者直接给出数据源。
-vim配置
 
+##### vim配置
+`Plug junegunn/fzf.vim`  下载插件
+`set rtp+=~/.fzf` 如果是homebrew安装，需要设置这句话
 
-> ag
+##### 执行命令
+```
+:Files      查询文件
+:Buffers    查询buffers
+:History    查询历史打开过的文件
+```
+> [ag](https://github.com/ggreer/the_silver_searcher)
+
+![pic alt](http://o99eh3ii0.bkt.clouddn.com//16-9-16/19872916.jpg)
+ag是一个命令行下的代码查询工具。 ag > ack > grep 。 查询速度非常快 。 可以和vim结合，查找的结果放在一个buffer中。
+它会自动忽略git/hg/svn-ignore的忽略内容。
+
+##### 安装
+`sudo brew install the_silver_searcher`
+`Plug 'rking/ag.vim'`
+
+##### 与fzf结合
+安装fzf后，执行 `:Ag someword `,其结果可以用fzf筛选。
+![pic alt](http://o99eh3ii0.bkt.clouddn.com//16-9-16/74584269.jpg)
+
 
 ## 代码格式化
 
