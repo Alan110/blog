@@ -2,6 +2,7 @@
 title: awk 简单入门
 date: 2016-11-30 16:01:21
 tags:
+categories: "linux"
 ---
 
 awk是一个强大的文本处理工具，在处理简单的文本数据时非常有用，甚至在写mapreduce的时候也能派上用场。它是按行处理文本的, 可以与sed，grep结合
@@ -26,7 +27,7 @@ awk -F '[ ,]'  '{print $1,$2,$5}'   log.txt
 
 ```awk
 
-awk '{[pattern] action}' {filenames}   # 行匹配语句 awk '' 只能用单引号
+awk '[pattern] {action}' {filenames}   # 行匹配语句 awk '' 只能用单引号
 
 awk '$1==2 {print $1,$3}' log.txt    #命令
 ```
@@ -95,6 +96,23 @@ END {
 * 变量不需要声明
 * 全部是全局变量
 * 有关联数组, for in 遍历
+
+> 正则匹配行
+
+~ 表示模式开始。// 中是模式。
+
+```sh
+
+# 输出第二列包含 "th"，并打印第二列与第四列
+awk '$2 ~ /th/ {print $2,$4}' log.txt
+awk '/re/ ' log.txt
+
+# 模式取反
+awk '$2 !~ /th/ {print $2,$4}' log.txt
+awk '!/th/ {print $2,$4}' log.txt
+```
+
+
 
 ## 完整例子
 
