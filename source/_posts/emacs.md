@@ -313,6 +313,19 @@ minor mode 是辅助major mode 的，比如line-number-mode，auto-fill-mode, �
 
 > 按键映射
 
+```lisp
+; ctrl
+(define-key evil-normal-state-map "\C-n" (lambda () (interactive) (dired "./" )) )
+; c-/
+(define-key evil-normal-state-map "\C-_" 'comment-region)
+; delete
+(define-key evil-normal-state-map (kbd "DEL")  'previous-buffer)
+; fx
+(global-set-key (kbd "<f3>") 'open-in-browser)
+; tab
+(global-set-key (kbd "TAB") 'open-in-browser)
+```
+
 ## 插件机制
 
 > 

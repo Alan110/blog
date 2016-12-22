@@ -45,3 +45,23 @@ vim虽然是开源的，但是所有的修改都必须经过作者Bram Moolenaar
 
 
 ## evil
+
+
+
+## 按键绑定
+
+evil的按键绑定简单说有2种形式，全局的，和某种mode下的。
+
+```lisp
+;; 在所有的normal状态下的key-bind
+(define-key evil-normal-state-map "\C-n" (lambda () (interactive) (dired "./" )) )
+
+;; 在特定mode下的key-bind
+(evil-define-key 'normal web-mode-map (kbd "TAB") 'tab-to-tab-stop)
+```
+
+查看自己当前处于什么major mode
+
+```
+c-h v RET major-mode RET
+```

@@ -31,7 +31,7 @@ Github：https://github.com/Alan110
 
 * 熟练面向对象 AMD，CMD模块化,数据驱动编程 
 
-*
+* 熟悉nodejs , npm
 
 * 熟练常用构建工具 gulp，fis3，webpack
 

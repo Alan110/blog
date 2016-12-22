@@ -74,6 +74,7 @@ theme: next
 # 自定义配置
 avatar: http://o99eh3ii0.bkt.clouddn.com//16-8-14/31430191.jpg
 duoshuo_shortname: shangshanruoshui
+baidu_analytics : 788014a7a9f4765f40e6db467bc9388e
 
 #index_generator:
 #  per_page: 1
