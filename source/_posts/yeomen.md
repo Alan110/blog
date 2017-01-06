@@ -19,7 +19,7 @@ generator-baseconfig
 ├── generators
 │   └── app
 │       ├── index.js
-│       └── templates
+│       └── templatesl
 │           ├── dir
 │           ├── .ackrc
 │           ├── .eslintrc.json
@@ -28,7 +28,38 @@ generator-baseconfig
 └── package.json
 ```
 
-yeoman-generator 需要加入package.json依赖
+yeoman-generator 需要加入package.json npm依赖
+
+```
+{
+  "name": "generator-arch-karmaTest",
+  "version": "0.0.4",
+  "description": "karma单元测试环境",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Alan110/generator-arch-karmaTest.git"
+  },
+  "files": [
+    "generators/app"
+  ],
+  "homepage": "git@github.com:Alan110/generator-arch-karmaTest",
+  "keywords": [
+    "yeoman-generator",
+    "karmaTest"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alan110",
+  "license": "MIT",
+  "devDependencies": {
+    "chalk": "^1.1.3",
+    "yeoman-generator": "^0.24.1",
+    "yosay": "^1.2.0"
+  }
+}
+```
 
 > 基本代码
 
@@ -75,7 +106,7 @@ module.exports = baseconfig;
 
 ## 生命周期
 
-> run loop
+> [run loop](http://yeoman.io/authoring/running-context.html)
 
 可以理解每一个方法就是一个task，按顺序执行。
 当执行yo example启动生成器时，它会沿着它的生命周期执行如下特定名称的函数，这些特定名称的函数会放进一个队列里面按顺序执行，如果功能函数不是特定的函数名称，如上面的method1，则放进另一个队列default按顺序执行。这些特定的函数名称有:
@@ -134,6 +165,64 @@ asyncTask: function () {
 }
 ```
 
+## [修改已经存在的文件内容](http://yeoman.io/authoring/file-system.html)
+
+```JavaScript
+this.fs.copy(path, newPath, {
+    process: function(content) {
+
+        /* Any modification goes here. Note that contents is a Buffer object */
+
+        var regEx = new RegExp('old string', 'g');
+        var newContent = content.toString().replace(regEx, 'new string');
+        return newContent;
+    }
+});
+```
+
+## [获取cli参数](http://yeoman.io/authoring/user-interactions.html)
+
+yo baseconfig gulp
+
+```javascript
+    initializing : function(){
+        this.argument('type', {
+            type: String,
+            required: false,  // 可选，不强制
+            default: 'gulp'
+        });
+    },
+	myStart: function() { 
+        var type = this.options.type; // 获取参数
+        this.log(type || '');
+
+        if (['gulp', 'node'].indexOf(type) == -1) {
+            this.log('没有指定或者非法参数，使用默认值 gulp')
+            type = this.options.type = 'gulp';
+        }
+
+        this['_gen_' + type]();
+
+    },
+
+```
+
+一定要在初始化的时候指定需要监听的参数，否则可能获取不到
+
+______
+
+如果是这种参数
+yo baseconfig --coffee
+
+```
+    initializing : function(){
+		 this.option('coffee'); //设置参数
+    },
+	myStart: function() { 
+		this.log(this.option('coffee')); //获取参数
+    }
+```
+
 ##  与用户交互
 
 ![pic alt](http://o99eh3ii0.bkt.clouddn.com//16-9-12/3780543.jpg)
@@ -165,6 +254,22 @@ prompting: function () {
       this.log('cool feature', answers.cool);
     }.bind(this));
 }
+
+```
+
+## 和别的插件组合
+
+## [加载依赖(npm , brower)](http://yeoman.io/authoring/dependencies.html)
+
+在install生命周期执行 this.npmInstall, 可以加载npm包,这很方便动态添加依赖，多个生成插件之间的配合。
+
+```javascript
+    install : function () {
+         this.npmInstall(['babel-preset-es2015-rollup'], { 'save-dev': true });
+         this.npmInstall(['rollup-plugin-babel'], { 'save-dev': true });
+         this.npmInstall(['rollup-plugin-replace'], { 'save-dev': true });
+         this.npmInstall(['rollup-plugin-uglify'], { 'save-dev': true });
+    },
 
 ```
 
