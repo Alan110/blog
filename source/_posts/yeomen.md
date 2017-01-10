@@ -214,7 +214,7 @@ ______
 如果是这种参数
 yo baseconfig --coffee
 
-```
+```javascript
     initializing : function(){
 		 this.option('coffee'); //设置参数
     },
