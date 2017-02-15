@@ -1,6 +1,8 @@
 ---
-title: JavaScript的类型转换
+title: JavaScript-类型转换
 date: 2017-01-18 16:19:56
+type: "categories"
+categories: "JavaScript"
 tags:
 ---
 

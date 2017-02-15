@@ -1,6 +1,8 @@
 ---
 title: es6调研报告
 date: 2016-12-29 15:53:49
+type: "categories"
+categories: "JavaScript"
 tags:
 ---
 
@@ -20,7 +22,10 @@ es6(ECMAScript 6) 下一代JavaScript标准语法,它是JavaScript的血统重�
 |chrome，Safari，Edge，Firefox，Opera| 差不多97%|
 |nodejs，6.5  以上|差不多支持了97%的新特性。|
 
-总体看Safari是对es6支持最好的浏览器。不过**import**这一特性我在chrome和Safari上都没有成功，据说Edge是可以的。 **nodejs 6 也不支持import，只能用require**。
+总体看Safari是对es6支持最好的浏览器,支持率100%。
+其中支持module特性的只有Safari Technology Preview 21 及其以上和Edge最新版，nodejs 6也不支持import，只能用require。
+
+![pic alt](http://o99eh3ii0.bkt.clouddn.com//17-2-5/33253591-file_1486288762048_15985.png "opt title")
 
 详细的支持情况可以参考这个表 [es6各平台兼容表](http://kangax.github.io/compat-table/es6/)
 
@@ -41,7 +46,7 @@ es6(ECMAScript 6) 下一代JavaScript标准语法,它是JavaScript的血统重�
 
 基于rollup js API的封装，使之与gulp的工作流结合，与上一个的区别是，gulp的社区广泛，大多数人最熟的，有人写插件。上手快，但是有很多隐藏的坑，这不排第一的gulp-rollup就挺坑的，有很多重叠的配置。因为已经是二次封装了。熟悉npm的API的同时，为了避免坑还要了解rollup 自己的底层API。好在社区广泛，大多数工具可以重复利用，有积累价值。
 
-babel插件要使用rollup自己的，需要在单文件的时候就进行转换。其他的比如sourcemap, replace等可以用gulp的工具流, 此babel插件的配置是依赖配置文件的。
+babel插件要使用rollup自己的，需要在单文件的时候就进行转换。其他的比如sourcemap, replace等可以用gulp的工具流, 此babel插件的配置可以集成到rollup的配置里面，不需要另外写一个配置文件。
 
 多版本输出，可以输出不同format的bundle，如果是不同工作流，就再写一个task吧，最开始我还想抽象一下成为配置文件，后来发现其实没必要，gulp的api已经是可以配置+简易编程的了，一个task其实就是一个配置文件，也不在乎多写那几行代码，拷贝就行，就是对强迫症有点难受(卧槽。。我真的是强迫症。。)。
 
@@ -58,7 +63,7 @@ babel插件要使用rollup自己的，需要在单文件的时候就进行转换
 写了一个npm包，集成了es6 + rollup + gulp + eslint. 基本构成es6书写环境。 欢迎下载试用
 
 ```javascript
-## 依赖就全局安装吧，返回后续也会用
+## 依赖就全局安装吧，反正后续也会用
 npm install -g yeoman-generator
 npm install -g babel
 npm install-g babel-cli

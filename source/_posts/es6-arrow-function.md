@@ -1,6 +1,8 @@
 ---
 title: 坑之箭头函数
 date: 2017-01-18 11:53:47
+type: "categories"
+categories: "踩过的坑"
 tags:
 ---
 

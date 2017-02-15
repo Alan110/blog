@@ -1,5 +1,5 @@
 ---
-title: http--thunk 和 content-length
+title: http--thunk 和 Bigpipe
 date: 2016-12-07 13:23:16
 tags:
 categories: "网络"
@@ -57,6 +57,8 @@ trailer        = *(entity-header CRLF)
 最后，Chunk最后一块的后面跟着一个可选的尾部trail（包括消息头header）
 CRLF是指回车换行
 
+
+## BigPipe
 
 ## 参考
 
