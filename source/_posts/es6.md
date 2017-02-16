@@ -22,8 +22,8 @@ es6(ECMAScript 6) 下一代JavaScript标准语法,它是JavaScript的血统重�
 |chrome，Safari，Edge，Firefox，Opera| 差不多97%|
 |nodejs，6.5  以上|差不多支持了97%的新特性。|
 
-总体看Safari是对es6支持最好的浏览器,支持率100%。
-其中支持module特性的只有Safari Technology Preview 21 及其以上和Edge最新版，nodejs 6也不支持import，只能用require。
+**总体看Safari是对es6支持最好的浏览器,支持率100%。**
+**其中支持module特性的只有Safari Technology Preview 21 及其以上和Edge最新版，nodejs 6也不支持import，只能用require。**
 
 ![pic alt](http://o99eh3ii0.bkt.clouddn.com//17-2-5/33253591-file_1486288762048_15985.png "opt title")
 
