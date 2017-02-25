@@ -83,18 +83,19 @@ module.exports = {
 
   module: {
     loaders:[ // 针对资源文件
+      // npm install --save-dev babel-loader babel-core babel-preset-es2015  babel-preset-react  编译jsx
       { test: /\.js[x]?$/, exclude: /node_modules/, loader: 'babel-loader?presets[]=es2015&presets[]=react' }, // 简写  使用es6
       { test: /\.css$/, loader: 'style-loader!css-loader?modules' }, // 将css文件插入dom
       {
         test: /\.png$/,
-        loader: "url-loader",
+        loader: "url-loader",  // 将图片转换成base64
         query: { mimetype: "image/png" }
       }
     ]
   },
 
-  externals : {
-  
+  externals: { // 遇到require这些时, 不需要再编译. 适合那些常用的库, 已经在页面通过<script>引入了, 就无需都打包到一起了 , 全局变量申明
+        jquery: 'jQuery',
   },
 
   plugins: [ // 扩展webpack能力
@@ -156,13 +157,25 @@ webpack --progress --colors
 `监听增量编译`
 webpack --progress --colors --watch
 
-`调试服务器webpack-dev-server`
+> 调试服务器[webpack-dev-server](http://webpack.github.io/docs/webpack-dev-server.html)
+
 启动一个 express 静态资源 web 服务器，并且会以监听模式自动运行 webpack
 webpack-dev-server --progress --colors
 
-**如果webpack使用的1.x的版本，那么webpack-dev-server也要使用1.x的版本，否则会报如下错误：Connot find module 'webpack/bin/config-yargs'。**
+* 用webpack-dev-server生成bundle.js文件是在内存中的，并没有实际生成；
+
+* 如果引用的文件夹中已经有bundle.js就不会自动刷新了，你需要先把bundle.js文件手动删除（后期有插件可以完成）
+
+* webpack-dev-server --content-base build/   指定server的根目录，不指定则为当前目录
+
+* --devtool eval：为你的代码创建源地址。当有任何报错的时候可以让你更加精确地定位到文件和行号
+
+* 如果webpack使用的1.x的版本，那么webpack-dev-server也要使用1.x的版本，否则会报如下错误：Connot find module 'webpack/bin/config-yargs'。
+
+* 如果已经有一个工程中使用了webpack-dev-server，并且在运行中，没有关掉的话，那么8080端口就被占用了，此时如果在另一个工程中使用webpack-dev-server就会报错：Error: listen EADDRINUSE 127.0.0.1:8080。*
 
 `排查错误`
+
 webpack --display-error-details
 
 `HMR`
