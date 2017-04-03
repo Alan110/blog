@@ -44,3 +44,19 @@ gulp.task('ref',function(){
 
 
 被打包的文件应该自行做单文件处理，和资源定位
+
+## 注意事项
+
+1. gulp的任务是异步执行的不能保证顺序，使用gulp-sequence同步执行任务
+
+*  dest不能重命名，使用gulp-rename解决
+
+*  最好分成开发配置，上线配置2分，互不干扰
+
+*  插件太多，每个都要require很麻烦，使用gulp-load-plugins解决，$.pluginName , 驼峰命名
+
+2. API
+
+gulp.src
+
+gulp.dest
