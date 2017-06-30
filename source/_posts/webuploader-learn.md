@@ -51,12 +51,13 @@ var uploader = WebUploader.create({
     },
     chunked : true, 
     threads : 1, // 设置并发请求数
+    duplicate : true, // 默认不能上传重复的文件
     chunkSize : 1.7 * 1024 * 1024, // 分片大小
     server: '../../server/fileupload.php',
     accept : {
         title: 'Images',
         extensions: 'gif,jpg,jpeg,bmp,png',
-        mimeTypes: 'image/*',
+        mimeTypes: 'image/*', // 改成具体的接受类型，否则会有变得延迟的问题
         compress : false
     }
 
