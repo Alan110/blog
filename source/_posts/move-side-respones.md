@@ -14,30 +14,29 @@ tags:
 
 > 物理像素(Device Pixels)
     
-    真实物理设备上的像素点, 单位是px，但也是相对的，因为我的点可能比你的点小
+真实物理设备上的像素点, 单位是px，但也是相对的，因为我的点可能比你的点小
 
 > 逻辑像素(设备独立像素)
     
-    逻辑像素是一个相对的抽象概念,并不是实际的具体长度。比如css像素，它只是一个单位，具体渲染出来有多大得看设备。
+逻辑像素是一个相对的抽象概念,并不是实际的具体长度。比如css像素，它只是一个单位，具体渲染出来有多大得看设备。
 
 > dpr (Device pixel ratio)
 
-    * 表示每个逻辑像素（css）有几个物理像素
-    * dpr = 物理像素 / css像素
-    * window.devicePixelRatio 可以直接获取
+* 表示每个逻辑像素（css）有几个物理像素
+* dpr = 物理像素 / css像素
+* window.devicePixelRatio 可以直接获取
 
 > dpi/ppi (Dots Per Inch / Pixel Per Inch)
 
-    * 像素密度，每英寸的像素点个数。
-    * Math.sqrt(750*750 + 1334*1334) / 4.7 = 326ppi // 屏幕对角线的像素尺寸 / 物理尺寸（inch）
+* 像素密度，每英寸的像素点个数。
+* Math.sqrt(750*750 + 1334*1334) / 4.7 = 326ppi // 屏幕对角线的像素尺寸 / 物理尺寸（inch）
 
 > viewport
 
-    * 视口，桌面上视口宽度等于浏览器宽度，也等于css像素，但在手机上有所不同 。 
-    * 它也是一个虚拟的概念，因为手机的分辨率高，在没有缩放的情况下，手机上的视口要比屏幕宽度大得多，但它实际尺寸就是屏幕那么大，所以就只好缩小网页，将其容纳于视口之中。
-    * <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>, 所以有了这个经典的meta标签，设置视口width=device-width 。
-    * 这也是为什么手机上能双指缩放
-
+* 视口，桌面上视口宽度等于浏览器宽度，也等于css像素，但在手机上有所不同 。 
+* 它也是一个虚拟的概念，因为手机的分辨率高，在没有缩放的情况下，手机上的视口要比屏幕宽度大得多，但它实际尺寸就是屏幕那么大，所以就只好缩小网页，将其容纳于视口之中。
+* <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>, 所以有了这个经典的meta标签，设置视口width=device-width 。
+* 这也是为什么手机上能双指缩放
 
 
 
@@ -75,7 +74,7 @@ tags:
 缺点就是所有元素都脱离了的文档，采用平面定位的方式来布局。
 
 
-## rem
+## 动态计算rem
 
 既然要伸缩，就需要一个统一的参照标准，这是最好的。
 
@@ -127,6 +126,18 @@ iPhone6  375设备宽度   750设计稿宽度 正好是2倍
  fontSize : 实际的html上的字体大小
 
  我们的换算基准是固定的，缩放的任务交给了rem
+
+
+ ## 动态计算meta标签
+
+`<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>`
+从前面的viewport的知识，我们知道，viewpoint是可以进行缩放的，一般情况下，我只是把viewpoint设置成了设备的css宽度，并且没有缩放。其实也可以用它来实现响应式缩放。
+通过js计算出当前设备的dpr
+scale = 1 / dpr
+动态设置meta标签的scale缩放程度。
+
+rem我们也用，只不过它只是作为一个写法标准，缩放的任务是交给了meta 标签的scale属性。
+
 
 
 ## flexbox 

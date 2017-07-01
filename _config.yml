@@ -69,7 +69,7 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 #theme: modernist
-theme: next
+theme: hexo-next-snow
 
 # 自定义配置
 avatar: http://o99eh3ii0.bkt.clouddn.com//16-8-14/31430191.jpg
