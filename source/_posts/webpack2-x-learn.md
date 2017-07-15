@@ -12,6 +12,8 @@ tags:
 
 > 异步模块加载
 
+import
+
 
 > commonChunks
 
@@ -22,4 +24,5 @@ tags:
 ## 三方模块打包
 
 exports-loader
+script-loader
 extreal

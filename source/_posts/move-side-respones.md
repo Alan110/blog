@@ -122,7 +122,7 @@ iPhone6  375设备宽度   750设计稿宽度 正好是2倍
  basePx : 100 ,换算基准, 1rem等于多少px，这个值可以随意定，因为后续px换算rem时会除以这个值，设为100只是为了方便计算
  width : 750 代表设计稿宽度
  viewportWidth : 代表设备宽度，css像素
- viewportWidth / width : 缩放比例
+ viewportWidth / width : 缩放比例, 其实就 1/dpr
  fontSize : 实际的html上的字体大小
 
  我们的换算基准是固定的，缩放的任务交给了rem
@@ -131,13 +131,22 @@ iPhone6  375设备宽度   750设计稿宽度 正好是2倍
  ## 动态计算meta标签
 
 `<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>`
-从前面的viewport的知识，我们知道，viewpoint是可以进行缩放的，一般情况下，我只是把viewpoint设置成了设备的css宽度，并且没有缩放。其实也可以用它来实现响应式缩放。
+从前面的viewport的知识，我们知道，viewpoint是可以进行缩放的，一般情况下，我只是把viewpoint设置成了设备的css宽度，并且没有缩放。通过rem动态计算来实现缩放。其实也可以用它来实现响应式缩放。
 通过js计算出当前设备的dpr
 scale = 1 / dpr
 动态设置meta标签的scale缩放程度。
 
 rem我们也用，只不过它只是作为一个写法标准，缩放的任务是交给了meta 标签的scale属性。
 
+> [lib-flexable](http://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html)
+
+这是淘宝沉淀的自适应方案，就是采用动态计算meta标签和rem，来做的。
+
+原理 ：
+
+和响应式方案，媒体查询有冲突
+
+只兼容了安卓
 
 
 ## flexbox 
