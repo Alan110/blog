@@ -174,6 +174,83 @@ var base64ToBlob =  function (base64, mime) {
 
 > 这里转成blob对象后并没有直接放入FormData,而是又转成了file对象，目的是为了指定文件本身的文件名，当然如果对文件名没有要求的，可以忽略这一步。大部分后端会依赖文件名以及后缀，做一些处理。
 
+## 分片上传超大文件
+
+上传文件过大会有很多问题，往往server只支持2MB大小的数据。此时可以利用分片上传超大文件
+
+原理是利用**file对象的slice**方法，切割文件，发送多个请求，然后后端拼接文件。
+
+* 需要知道总共的分片数，
+* 当前的分片数据
+* 每片的字节大小
+* 当前的分片index
+
+```javascript
+
+    /**
+        * 分片上传
+        * 递归上传切割出来的分片
+        * 注意上传的额外formData，告诉server如何合并文件
+        */
+    chunkUploadFile(file) {
+
+        let chunkUpload = () => {
+
+            curChunkIndex += 1;
+            let start = curChunkIndex * this.chunkSize;  // 切割数据
+            let end = Math.min(file.size, start + this.chunkSize);
+
+            // 准备formData
+            var formData = new FormData();
+            let chunkFile = file.slice(start, end);
+            chunkFile = new File([chunkFile], file.name);
+            chunkFile.filename = file.name;
+            formData.append('file', chunkFile);
+            formData.append('size', chunkFile.size);
+            formData.append('lastModifiedDate', file.lastModifiedDate);
+            formData.append('name', file.name);
+            formData.append('chunks', chunkCount);
+            formData.append('type', file.type);
+            formData.append('chunk', curChunkIndex);
+            formData.append('id', 'WU_FILE_0');  // 这个名字是固定，估计是server用来合并文件
+            for (var prop in this.formData) {
+                formData.append(prop, this.formData[prop]);
+            }
+
+            // 开始上传
+            $.ajax({
+                url: this.server,
+                type: 'POST',
+                data: formData,
+                processData: false, // 不处理发送的数据，因为data值是Formdata对象，不需要对数据做处理
+                cache: false,
+                dataType: 'json',
+                contentType: false,
+                error: function (e) {
+                    self.$emit('error', e);
+                },
+                success: (res) => {
+                    if (curChunkIndex + 1 < chunkCount) {
+                        chunkUpload();
+                    } else {
+                        self.$emit('success', res);
+                    }
+                }
+            })
+        }
+
+        // 上传之前
+        this.$emit('beforeUpload', file);
+        let self = this;
+        let chunkCount = Math.ceil(file.size / this.chunkSize);
+        let curChunkIndex = -1;
+
+        chunkUpload();
+
+    },
+
+```
+
 ## flash
 
 flash 虽然可以实现以上的所有能力，但它终将死亡，这里就不再叙述了。能用到flash的一般都是为了兼容老的浏览器。
