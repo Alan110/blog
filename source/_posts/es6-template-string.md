@@ -68,6 +68,91 @@ tag`string text line 1 \n string text line 2`;
 
 ## 标签函数的应用
 
-> 利用标签函数来实现模板引擎
+> 过滤非法字符串
+
+```javascript
+function safeHTML(strings, ...interpolatedValues) { // `...` essentially slices the arguments for us.
+  return strings.reduce((total, current, index) => { // use an arrow function for brevity here
+    total += current;
+    if (interpolatedValues.hasOwnProperty(index)) {
+      total += String(interpolatedValues[index]).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    return total;
+  }, '');
+}
+```
 
 > 过滤掉多行字符串中的空格
+
+fdsfsd
+
+> 简易模板引擎
+
+原理是利用标签函数可以拿到模板字符串中的所有字符串片段和变量值，并且一一对应,所以我们可以**选择性的重新组装模板**,或者对变量进行处理。这里借助了symbol变量，作为block片段的分隔符
+
+```javascript
+var startBlockSentinel = Symbol('blockSentinel');
+var ignoreBlockSentinel = Symbol('ignoreBlockSentinel');
+var endBlockSentinel = Symbol('endBlockSentinel');
+
+var helpers = {
+    if: (condition, thenTemplate, elseTemplate = '') => {
+        return condition ? startBlockSentinel : ignoreBlockSentinel;
+    },
+    end: () => {
+        return endBlockSentinel;
+    },
+    unless: (condition, thenTemplate, elseTemplate) => {
+        console.log(!condition)
+        return !condition ? startBlockSentinel : ignoreBlockSentinel;
+    },
+    registerHelper(name, fn) {
+        helpers[name] = fn;
+    }
+};
+
+/**
+ * 
+ * 标签模板，修饰模板字符串的返回值
+ * 拼接字符串，变量和字面字符是一一对应的
+ * @param {any} strings  字面字符串数组
+ * @param {any} interpolatedValues  替换变量数组
+ * @returns 
+ */
+function template(strings, ...interpolatedValues) {
+    // 条件块状态记录
+    const statusStuck = [];
+
+    return strings.reduce((total, current, index) => {
+
+        // 拼接字符串, if为true, 或者不在if内
+        if ((statusStuck.length > 0 && statusStuck[statusStuck.length - 1] == startBlockSentinel) || statusStuck.length == 0) {
+            // +占位符之前的内容
+            total += current;
+        }
+
+        // 更新当前状态
+        if (interpolatedValues.hasOwnProperty(index)) {
+            let value = interpolatedValues[index];
+            if (value === startBlockSentinel || value === ignoreBlockSentinel) {
+                statusStuck.push(value);
+            } else if (value === endBlockSentinel) {
+                statusStuck.pop();
+            } else {
+                // + 占位符变量，过滤非法字符,转义成了实体，不能有<div> 
+                // 只在是true block状态时才添加，否则丢弃
+                // total +=  String(interpolatedValues[index]).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                if(statusStuck[statusStuck.length - 1] == startBlockSentinel){
+                    total += String(interpolatedValues[index]);
+                }
+            }
+        }
+
+        return total;
+
+    }, '');
+
+}
+
+export { template, helpers }
+```
