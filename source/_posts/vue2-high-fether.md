@@ -1,96 +1,34 @@
 ---
-title: vue2高级能力
+title: vue2高级技巧-基础能力
 date: 2017-05-07 18:36:58
-tags:
 ---
 
 
 ## 递归组件
 
-使用name属性, 便可在组件的template中直接使用组件本身
+使用name属性, 便可在组件的template中直接使用组件本身, **比如在某些递归的场景就需要如此使用**
 
 ```javascript
 <template lang="html">
     <li>
-        <div
-            :class="{bold: isFolder}"
-            @click="handelClick"
-            v-if="model">
-            {{model.name}}
-            <span v-if="isFolder">[{{model.open ? '-' : '+'}}]</span>
-        </div>
-        <ul v-show="model.open" v-if="isFolder">
-            <item
-                class="item"
-                v-for="item in model.children"
-                key="item"
-                :model="item">
-            </item>
-            <li class="add" @click="addChild">+</li>
-        </ul>
+        <item></item>
     </li>
 </template>
 <script>
-
     import utils from 'utils'
-
     export default{
-
-            name : 'item',
-
-            props: {
-                model: Object
-            },
-
-            computed: {
-                isFolder: function () {
-                    return this.model &&  this.model.children &&
-                        this.model.children.length
-                }
-            },
-
-            methods: {
-                handelClick(){
-                    if(this.isFolder) {
-                        this.toggle();
-                    }else{
-                        utils.eventBus.$emit(this.model.actionName);
-                    }
-                },
-                toggle: function () {
-                    if (this.isFolder) {
-                        this.open = !this.open
-                    }
-                },
-                changeType: function () {
-                    if (!this.isFolder) {
-                        Vue.set(this.model, 'children', [])
-                        this.addChild()
-                        this.open = true
-                    }
-                },
-                addChild: function () {
-                    this.model.children.push({
-                        name: 'new stuff'
-                    })
-                }
-            }
+        name : 'item',
+        props: {
+            model: Object
+        }
     }
-</script>
-
-<style rel="stylesheet/less">
-    .item {
-        cursor: pointer;
-    }
-    .bold {
-        font-weight: bold;
-    }
-</style>
 ```
 
 ## 动态切换component
 
 当我们需要动态切换组件的时候，可以使用内置的component标签，不必写冗余的if else，但是要注意的是，动态切换默认会重新渲染组件，在某些比较费时的组件又需要频繁切换的时候，可以用keep-alive标签使其保持在内存。
+
+**动态component其实可以和异步组件，以及vuex数据结合**，实现按需注册并加载使用组件。
 
 ```javascript
 <component v-for="(layer,index) in curScene.layers" :key="layer.id" :is="layer.type" source="scenebox" :layer="layer" :index="index" :layers="curScene.layers"></component>
@@ -104,6 +42,7 @@ tags:
 
 ## v-model 的秘密
 
+vue的双向数据绑定其实语法糖，通过内部触发input事件，配合指令实现。
 http://www.cnblogs.com/wwlhome/p/6551165.html
 
 ## v-for key
@@ -115,22 +54,34 @@ key 是唯一id，不能重复，否则会报致命错误
 有子组件的时候，需要加上key
 
 ## 调整数组顺序
-可以使用splice变异方法
-`layers.splice.apply(layers, [toIndex, 0].concat(moved = layers.splice(fromIndex, howMany)) )`
 
+可以使用数组的变异方法splice
+```javascript
+layers.splice.apply(layers, [toIndex, 0].concat(moved = layers.splice(fromIndex, howMany)) )`
+```
 
 ## v-for 和 v-if 需要同时使用时
 
-使用<template></template>标签替换
-```
+使用<template></template>标签替换, **template是一个空标签，没有实际渲染内容，但是可以作为逻辑的载体**
+
+```javascript
 <template  v-for="page in pages" >
-		<tr class="item" v-if="!page.global" :key="page.id">
-			<td><img :src="page.global.sceneImgs[0] + '?key=' + randomKey" class="page-thumb"
-					 v-if="page.global.sceneImgs && page.global.sceneImgs[0]" style="height:100%;" alt=""></td>
-			<td>{{ page.title }}</td><Paste>
+    <tr class="item" v-if="!page.global" :key="page.id">
+        <td><img :src="page.global.sceneImgs[0] + '?key=' + randomKey" class="page-thumb"
+                    v-if="page.global.sceneImgs && page.global.sceneImgs[0]" style="height:100%;" alt=""></td>
+        <td>{{ page.title }}</td><Paste>
+</templte>
 ```
 
 ## 动态组件
+
+利用webpack的异步加载模块的能力，和vue的异步注册实现动态组件加载。
+
+异步import返回的是一个promise
+
+```javascript
+Vue.component('widget',()=> import('./widget/text'));
+```
 
 ## [指令](https://cn.vuejs.org/v2/guide/custom-directive.html#main)
 
@@ -189,17 +140,25 @@ Vue.directive('drag', {
 ## vuex
 
 > vuex于eventBus的区别
-vuex = gutters + actions + mutations
+
+vuex = getters + actions + mutations
 状态管理器，vuex = 全局事件中心 + 全局变量
 eventBus = 全局事件中心
 所以vuex更加强大, 
 
-只是简单的父子组件通信，使用$emit，$on
-稍微复杂的跨组件通信使用eventBus
-非常复杂的跨组件通信，以及状态切换使用vuex
+> 组件通信心得
 
-> 心得
-推荐所有的状态变化都通过mutations来改变。如果1个操作很复杂，或者是公用的，则可提取到action中，action中可以再访问action，或者提交多个commit，以及异步操作。
-mutations中的方法，应该尽可能的抽象, 满足尽可能多的情况。
-payload应该使用对象，拥有更好的扩展性。
+* 只是简单的父子组件通信，使用$emit，$on
+* 稍微复杂的跨组件通信使用eventBus
+* 非常复杂的跨组件通信，以及状态切换使用vuex
+
+
+> vuex心得
+
+**在大型复杂的软件架构中，推崇提取组件状态到state成为公共状态**更利于复用，和通信。
+大型软件架构中**vuex可以拆分成模块，异步注册**
+
+* 推荐所有的状态变化都通过mutations来改变。如果1个操作很复杂，或者是公用的，则可提取到action中，action中可以再访问action，或者提交多个commit，以及异步操作。
+* **mutations中的方法，应该尽可能的抽象, 满足尽可能多的情况。**
+* payload应该使用对象，拥有更好的扩展性。
 
