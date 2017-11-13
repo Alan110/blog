@@ -27,6 +27,8 @@ document.cookie = 'name=alan;age=11;expires=121321';
 ```
 cookie 是以；分割的键值对字符串。网上有很多教程，这里不多说。[基础教程](http://www.jb51.net/article/64330.htm)
 
+Cookie是可以覆盖的，如果重复写入同名的Cookie，那么将会覆盖之前的Cookie。
+
 ## 同主域跨域
 
 默认情况下，cookie只在相同服务端路径下的文件可以访问，设置path='/', 几可以在整个站点共享，跨目录。
