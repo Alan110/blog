@@ -1,5 +1,5 @@
 ---
-title: cookie SSO
+title: cookie跨域共享
 date: 2016-11-26 14:56:18
 tags:
 categories: "网络"
@@ -51,6 +51,18 @@ cookie 是以；分割的键值对字符串。网上有很多教程，这里不�
 有时候我们需要读取别的域下的cookie，也可以利用script的跨域能力。
 在访问a域时，向b域发起跨域请求，b域服务端获取到所有的cookie并以jsonp的形式返回。前端就能拿到cookie信息了。
 
+> **跨域读，跨域写都是利用jsonp，或者image的跨域访问的能力，将当前域的信息带到别的域处理，需要后端配合**
+
+
+## cors
+
+这里不得不提一下cors的几个属性, 当指定携带用户凭证的时候，域名不能使用通配符，必须指定详细的域名。
+且，`cookie仍然遵循同源策略，所以只有当前服务器的域名设置的cookie才能携带`，不能携带客户端cookie，所以`cors不能实现跨域cookie共享`
+
+```
+Access-Control-Allow-Credentials : true  // 携带用户凭证，cookie
+Access-Control-Allow-Origin : http://www.baidu.com  // 指定可跨域的域名
+```
 
 ## UV统计
 
