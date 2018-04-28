@@ -27,6 +27,8 @@ document.cookie = 'name=alan;age=11;expires=121321';
 ```
 cookie 是以；分割的键值对字符串。网上有很多教程，这里不多说。[基础教程](http://www.jb51.net/article/64330.htm)
 
+Cookie是可以覆盖的，如果重复写入同名的Cookie，那么将会覆盖之前的Cookie。
+
 ## 同主域跨域
 
 默认情况下，cookie只在相同服务端路径下的文件可以访问，设置path='/', 几可以在整个站点共享，跨目录。
@@ -51,7 +53,7 @@ cookie 是以；分割的键值对字符串。网上有很多教程，这里不�
 有时候我们需要读取别的域下的cookie，也可以利用script的跨域能力。
 在访问a域时，向b域发起跨域请求，b域服务端获取到所有的cookie并以jsonp的形式返回。前端就能拿到cookie信息了。
 
-> **跨域读，跨域写都是利用jsonp，或者image的跨域访问的能力，将当前域的信息带到别的域处理，需要后端配合**
+> **跨域读，跨域写都是利用jsonp，或者image的跨域访问的能力，将当前域的信息带到别的域处理，需要后端配合。还有一个坑是如果服务端cookie设置了httpOnly,这么客户端的js 无法通过document.cookie获取到该cookie。我们的这个方法也就失效了**
 
 
 ## cors
