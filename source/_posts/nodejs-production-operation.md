@@ -28,6 +28,10 @@ n是tj大神的项目,它是npm的一个包, 使用顺序是: node > n > node
 `n 6.11.3`
 `n ls`
 
+### 删除n
+rm -rf /usr/local/bin/n 
+rm -rf /usr/local/n
+
 > [nvm](https://github.com/creationix/nvm) (推荐)
 
 nvm 是一个bash脚本，独立与node 之外，**安装多个node版本的备份保存在~/.nvm目录下，通过改变路径映射实现多版本切换**。每个node版本都需要安装自己的全局模块。
@@ -57,8 +61,22 @@ nvm 是一个bash脚本，独立与node 之外，**安装多个node版本的备�
 `nvm install 6 --reinstall-packages-from=5`
 每个版本都有自己的全局node_modules,好在它提供了一个参数，我们不用每次都重新手动安装。你可以指定从哪个版本复制包引用
 
+`nvm exec 6.11.1 npm run dev`
+这个在多项目切换node版本，但并不改变默认node版本比较有用处
 
 
+### .nvmrc
+
+nvm use, nvm install, nvm exec, nvm run, and nvm which, 都会根据当前目录下的文件去寻找node版本，如果命令行中不指定版本的话
+
+### avn
+进入目录自动化切换当前node版本, 支持n，nvm
+在项目根目录下添加.node_version文件，内容为node版本
+
+#### 删除avn
+npm uninstall avn avn-nvm and removed ~/.avn and ~/.avnrc  and .zshrc 里面的脚本
+此时还是会报错 but still get this _avn: command not found
+开启一个新的shell就好了
 
 ## npm包版本管理
 
